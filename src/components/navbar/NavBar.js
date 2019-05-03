@@ -10,7 +10,7 @@ class NavBar extends Component {
     this.state = {
       loggedInUser: null
     }
-    this.service = new AuthService
+    this.service = new AuthService()
   }
 
   componentWillReceiveProps(nextProps) {
