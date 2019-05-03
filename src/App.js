@@ -51,7 +51,6 @@ class App extends Component {
           <Switch>
             <ProtectedRoute user={this.state.loggedInUser} path='/projects/:id' component={ProjectDetails} />
             <ProtectedRoute user={this.state.loggedInUser} path='/projects' component={ProjectList} />
-            <ProtectedRoute exact path="/projects/:id/tasks/:taskId" component={TaskDetails} />
           </Switch>
         </div>
       );
