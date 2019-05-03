@@ -19,7 +19,7 @@ class App extends Component {
     this.service = new AuthService();
   }
 
-  fetchUser = () => {
+  fetchUser() {
     if (this.state.loggedInUser === null) {
       this.service.loggedin()
         .then(response => {
@@ -35,7 +35,7 @@ class App extends Component {
     }
   }
 
-  getTheUser = userObj => {
+  getTheUser(userObj) {
     this.setState({
       loggedInUser: userObj
     })
@@ -44,31 +44,30 @@ class App extends Component {
 
   render() {
     this.fetchUser()
-    return (
-      <div className="App">
-        <NavBar userInSession={this.state.loggedInUser} getUser={this.getTheUser} />
-        <Switch>
-          {(!this.state.loggedInUser) ?
-            (
-              <Fragment>
-                <Route exact path='/signup' render={() => <SignUp getUser={this.getTheUser} />} />
-                <Route exact path='/' render={() => <Login getUser={this.getTheUser} />} />
-                <ProtectedRoute user={this.state.loggedInUser} path="/projects" component={ProjectList} />
-                <ProtectedRoute user={this.state.loggedInUser} path='/projects/:id' component={ProjectDetails} />
-              </Fragment>
-            )
-            :
-            (
-              <Fragment>
-                <Route exact path="/projects" component={ProjectList} />
-                <Route exact path="/projects/:id" render={(props) => <ProjectDetails loggedInUser={this.state.loggedInUser} {...props}/>} />
-              </Fragment>
-            )
-          }
-        </Switch>
-      </div>
-
-    )
+    if(this.state.loggedInUser){
+      return (
+        <div className="App">
+          <NavBar userInSession={this.state.loggedInUser} getUser={this.getTheUser} />
+          <Switch>
+            <ProtectedRoute user={this.state.loggedInUser} path='/projects/:id' component={ProjectDetails} />
+            <ProtectedRoute user={this.state.loggedInUser} path='/projects' component={ProjectList} />
+            <ProtectedRoute exact path="/projects/:id/tasks/:taskId" component={TaskDetails} />
+          </Switch>
+        </div>
+      );
+    } else {
+      return (
+        <div className="App">
+          <NavBar userInSession={this.state.loggedInUser} getUser={this.getTheUser} />
+            <Switch> 
+              <Route exact path='/signup' render={() => <SignUp getUser={this.getTheUser}/>}/>
+              <Route exact path='/' render={() => <Login getUser={this.getTheUser}/>}/>
+              <ProtectedRoute user={this.state.loggedInUser} path='/projects/:id' component={ProjectDetails} />
+              <ProtectedRoute user={this.state.loggedInUser} path='/projects' component={ProjectList} />
+            </Switch>
+        </div>
+      );
+    }
   }
 }
 
