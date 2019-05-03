@@ -8,7 +8,9 @@ import AddProject from './AddProject';
 class ProjectList extends Component {
   constructor() {
     super();
-    this.state = { listOfProjects: [] };
+    this.state = { 
+      listOfProjects: []
+    };
   }
 
   getAllProjects = () => {
@@ -35,6 +37,7 @@ class ProjectList extends Component {
                 <Link to={`/projects/${project._id}`}>
                   <h3>{project.title}</h3>
                 </Link>
+                {project.imageUrl && <img src={project.imageUrl} alt={project.title} />}
                 {/* <p style={{maxWidth: '400px'}} >{project.description} </p> */}
                 <ul>
                   {project.tasks.map((task, index) => {
