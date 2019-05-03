@@ -20,7 +20,7 @@ class AddTask extends Component {
     
     // { title, description, projectID } => this is 'req.body' that will be received on the server side in this route, 
     // so the names have to match
-    axios.post("http://localhost:5000/api/tasks", { title, description, projectID })
+    axios.post(`${process.env.REACT_APP_API_URL}/tasks`, { title, description, projectID })
     .then(() => {
           // after submitting the form, retrieve project one more time so the new task is displayed as well 
           //              |

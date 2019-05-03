@@ -1,22 +1,75 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
+import AuthService from './components/auth/auth-service';
+import ProtectedRoute from './components/auth/protected-routes';
 import ProjectList from './components/projects/ProjectList';
 import NavBar from './components/navbar/NavBar';
 import ProjectDetails from './components/projects/ProjectDetails';
 import TaskDetails from './components/tasks/TaskDetails';
+import SignUp from './components/auth/Signup';
+import Login from './components/auth/Login';
 
-const App = () => {
-  return (
-    <div className="App">
-      <NavBar />
-      <Switch>
-        <Route exact path="/projects" component={ProjectList}/>
-        <Route exact path="/projects/:id" component={ProjectDetails} />
-        <Route exact path="/projects/:id/tasks/:taskId" component={TaskDetails} />
-      </Switch>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      loggedInUser: null
+    }
+    this.service = new AuthService();
+  }
+
+  fetchUser = () => {
+    if (this.state.loggedInUser === null) {
+      this.service.loggedin()
+        .then(response => {
+          this.setState({
+            loggedInUser: response
+          })
+        })
+        .catch(err => {
+          this.setState({
+            loggedInUser: false
+          })
+        })
+    }
+  }
+
+  getTheUser = userObj => {
+    this.setState({
+      loggedInUser: userObj
+    })
+  }
+
+
+  render() {
+    this.fetchUser()
+    return (
+      <div className="App">
+        <NavBar userInSession={this.state.loggedInUser} getUser={this.getTheUser} />
+        <Switch>
+          {(!this.state.loggedInUser) ?
+            (
+              <Fragment>
+                <Route exact path='/signup' render={() => <SignUp getUser={this.getTheUser} />} />
+                <Route exact path='/' render={() => <Login getUser={this.getTheUser} />} />
+                <ProtectedRoute user={this.state.loggedInUser} path="/projects" component={ProjectList} />
+                <ProtectedRoute user={this.state.loggedInUser} path='/projects/:id' component={ProjectDetails} />
+              </Fragment>
+            )
+            :
+            (
+              <Fragment>
+                <Route exact path="/projects" component={ProjectList} />
+                <Route exact path="/projects/:id" render={(props) => <ProjectDetails loggedInUser={this.state.loggedInUser} {...props}/>} />
+              </Fragment>
+            )
+          }
+        </Switch>
+      </div>
+
+    )
+  }
 }
 
 export default App;
