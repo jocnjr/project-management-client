@@ -3,11 +3,12 @@
 import React, { Component } from 'react';
 import AuthService from './auth-service';
 import { Link } from 'react-router-dom';
+import BreadCrumb from '../BreadCrumb';
 
 class SignUp extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       username: '',
       password: '',
       errorMsg: null
@@ -42,24 +43,65 @@ class SignUp extends Component {
   }
 
   render() {
+    const breadCrumbitems = [
+      {
+        path: '/',
+        title: 'Home'
+      },
+      {
+        path: '/signup',
+        title: 'Signup'
+      }
+    ]
+
+
     return (
-      <div>
-        <h3>{this.state.errorMsg}</h3>
+      <section className='section'>
+        <BreadCrumb items={breadCrumbitems} />
         <form onSubmit={this.handleFormSubmit}>
-          <label>Username:</label>
-          <input type="text" name="username" value={this.state.username} onChange={e => this.handleChange(e)} />
-
-          <label>Password:</label>
-          <input type="password" name="password" value={this.state.password} onChange={e => this.handleChange(e)} />
-
-          <input type="submit" value="Sign Up" />
+          <div className="field">
+            <label className="label">Username</label>
+            <div className="control">
+              <input className="input" type="text" name="username" value={this.state.username} onChange={e => this.handleChange(e)} />
+            </div>
+          </div>
+          <div className="field">
+            <label className="label">Password</label>
+            <div className="control">
+              <input className="input" type="password" name="password" value={this.state.password} onChange={e => this.handleChange(e)} />
+            </div>
+          </div>
+          {
+            this.state.errorMsg &&
+            (<article className="message is-warning">
+              <div className="message-header">
+                <p>Error</p>
+                <button className="delete" aria-label="delete"></button>
+              </div>
+              <div className="message-body">
+                <strong>Pellentesque risus mi</strong>
+              </div>
+            </article>)
+          }
+          <div classNameName="field is-grouped">
+            <div className="control">
+              <button type='submit' className="button is-link">Sign up</button>
+            </div>
+            <div className="control">
+              <button type='reset' className="button is-text">Cancel</button>
+            </div>
+          </div>
         </form>
-
-        <p>Already have account?
-          <Link to={"/"}> Login</Link>
-        </p>
-
-      </div>
+        <div className="section">
+          <h6 className="subtitle is-6">
+            Do you have an account?
+            <br />
+            <Link className='button' to={"/"}>
+              Login
+          </Link>
+          </h6>
+        </div>
+      </section>
     )
   }
 }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import AuthService from './auth-service';
 import { Link } from 'react-router-dom';
+import BreadCrumb from '../BreadCrumb';
+
 
 class Login extends Component {
   constructor(props) {
@@ -27,8 +29,20 @@ class Login extends Component {
   }
 
   render() {
+    const breadCrumbitems = [
+      {
+        path: '/',
+        title: 'Home'
+      },
+      {
+        path: '/',
+        title: 'Login'
+      }
+    ]
+
     return (
-      <section className='section is-centered'>
+      <section className='section'>
+      <BreadCrumb items={breadCrumbitems} />
         <form onSubmit={this.handleFormSubmit}>
           <div className="field">
             <label className="label">Username</label>
