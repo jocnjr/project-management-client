@@ -8,7 +8,7 @@ import AddProject from './AddProject';
 class ProjectList extends Component {
   constructor() {
     super();
-    this.state = { 
+    this.state = {
       listOfProjects: []
     };
   }
@@ -33,17 +33,36 @@ class ProjectList extends Component {
         <div style={{ width: '60%', float: "left" }}>
           {this.state.listOfProjects.map(project => {
             return (
-              <div key={project._id}>
-                <Link to={`/projects/${project._id}`}>
-                  <h3>{project.title}</h3>
-                </Link>
-                {project.imageUrl && <img src={project.imageUrl} alt={project.title} />}
-                {/* <p style={{maxWidth: '400px'}} >{project.description} </p> */}
-                <ul>
-                  {project.tasks.map((task, index) => {
-                    return <li key={index}>{task.title}</li>
-                  })}
-                </ul>
+
+              <div key={project._id} className="card">
+                <div className="card-image">
+                  <figure className="image is-4by3">
+                    {
+                      (project.imageUrl)
+                        ?
+                        <img src={project.imageUrl} alt={project.title} />
+                        :
+                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image" />
+                    }
+                  </figure>
+                </div>
+                <div className="card-content">
+                  <div className="media">
+                    <div className="media-content">
+                      <p className="title is-4">{project.title}</p>
+                      {/* <p className="subtitle is-6">@johnsmith</p> */}
+                    </div>
+                  </div>
+                  <div className="content">
+                    {project.description}
+                    <hr />
+                    <ul>
+                      {project.tasks.map((task, index) => {
+                        return <li key={index}>{task.title}</li>
+                      })}
+                    </ul>
+                  </div>
+                </div>
               </div>
             )
           })

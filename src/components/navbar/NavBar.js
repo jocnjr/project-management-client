@@ -41,7 +41,7 @@ class NavBar extends Component {
 
           <div id="navbarBasicExample" className="navbar-menu">
             <div className="navbar-start">
-              <Link className="navbar-item" to='/projects'>
+              <Link className="navbar-item" activeClassName='active' to='/projects'>
                 Projects
               </Link>
             </div>

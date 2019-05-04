@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AuthService from './auth-service';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import BreadCrumb from '../BreadCrumb';
 
 
@@ -19,6 +19,9 @@ class Login extends Component {
       .then(response => {
         this.setState({ username: "", password: "" });
         this.props.getUser(response)
+        return <Redirect to={{
+          pathname: '/projects'
+        }} />
       })
       .catch(error => console.log(error))
   }
@@ -42,7 +45,7 @@ class Login extends Component {
 
     return (
       <section className='section'>
-      <BreadCrumb items={breadCrumbitems} />
+        <BreadCrumb items={breadCrumbitems} />
         <form onSubmit={this.handleFormSubmit}>
           <div className="field">
             <label className="label">Username</label>
@@ -69,7 +72,7 @@ class Login extends Component {
           <h6 className="subtitle is-6">
             Don't have account?
             <br />
-          <Link className='button' to={"/signup"}>
+            <Link className='button' to={"/signup"}>
               Signup
           </Link>
           </h6>
