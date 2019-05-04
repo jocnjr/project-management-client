@@ -19,7 +19,7 @@ class App extends Component {
     this.service = new AuthService();
   }
 
-  fetchUser() {
+  fetchUser = () => {
     if (this.state.loggedInUser === null) {
       this.service.loggedin()
         .then(response => {
@@ -35,7 +35,7 @@ class App extends Component {
     }
   }
 
-  getTheUser(userObj) {
+  getTheUser = userObj => {
     this.setState({
       loggedInUser: userObj
     })
@@ -46,17 +46,17 @@ class App extends Component {
     this.fetchUser()
     if(this.state.loggedInUser){
       return (
-        <div className="App">
+        <section className="section">
           <NavBar userInSession={this.state.loggedInUser} getUser={this.getTheUser} />
           <Switch>
             <ProtectedRoute user={this.state.loggedInUser} path='/projects/:id' component={ProjectDetails} />
             <ProtectedRoute user={this.state.loggedInUser} path='/projects' component={ProjectList} />
           </Switch>
-        </div>
+        </section>
       );
     } else {
       return (
-        <div className="App">
+        <section className="section">
           <NavBar userInSession={this.state.loggedInUser} getUser={this.getTheUser} />
             <Switch> 
               <Route exact path='/signup' render={() => <SignUp getUser={this.getTheUser}/>}/>
@@ -64,7 +64,7 @@ class App extends Component {
               <ProtectedRoute user={this.state.loggedInUser} path='/projects/:id' component={ProjectDetails} />
               <ProtectedRoute user={this.state.loggedInUser} path='/projects' component={ProjectList} />
             </Switch>
-        </div>
+        </section>
       );
     }
   }

@@ -32,30 +32,59 @@ class NavBar extends Component {
   render() {
     if (this.state.loggedInUser) {
       return (
-        <nav className="nav-style">
-          <ul>
-            <li>Welcome, {this.state.loggedInUser.username}</li>
-            <li>
-              <Link to='/projects' style={{ textDecoration: 'none' }}>Projects</Link>
-            </li>
-            <li>
-              <Link to='/'>
-                <button onClick={() => this.logoutUser()}>Logout</button>
+        <nav className="navbar is-warning" role="navigation" aria-label="main navigation">
+          <div className="navbar-brand">
+            <a className="navbar-item" href="/">
+              <img src="http://martinsfinedesserts.com/wp-content/uploads/parser/beard-logo-1.png" alt='some text' height="150" />
+            </a>
+          </div>
+
+          <div id="navbarBasicExample" className="navbar-menu">
+            <div className="navbar-start">
+              <Link className="navbar-item" to='/projects'>
+                Projects
               </Link>
-            </li>
-          </ul>
+            </div>
+
+            <div className="navbar-end">
+              <div className="navbar-item">
+                Welcome, {this.state.loggedInUser.username}
+              </div>
+              <div className="navbar-item">
+                <div className="buttons">
+                  <Link to='/' className="button is-primary">
+                    <strong onClick={() => this.logoutUser()}>Logout</strong>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </nav>
       )
     } else {
       return (
-        <div>
-          <nav className="nav-style">
-            <ul>
-              <li><Link to='/' style={{ textDecoration: 'none' }}>Login</Link></li>
-              <li><Link to='/signup' style={{ textDecoration: 'none' }}>Signup</Link></li>
-            </ul>
-          </nav>
-        </div>
+        <nav className="navbar is-warning" role="navigation" aria-label="main navigation">
+          <div className="navbar-brand">
+            <a className="navbar-item" href="/">
+              <img src="http://martinsfinedesserts.com/wp-content/uploads/parser/beard-logo-1.png" alt='some text' height="150" />
+            </a>
+          </div>
+
+          <div id="navbarBasicExample" className="navbar-menu">
+            <div className="navbar-end">
+              <div className="navbar-item">
+                <div className="buttons">
+                  <Link to='/signup' className="button is-primary">
+                    <strong>Sign up</strong>
+                  </Link>
+                  <Link to='/' className="button is-light">
+                    Log in
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
       )
     }
   }

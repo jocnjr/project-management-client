@@ -28,19 +28,39 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
+      <section className='section is-centered'>
         <form onSubmit={this.handleFormSubmit}>
-          <label>Username:</label>
-          <input type="text" name="username" value={this.state.username} onChange={e => this.handleChange(e)} />
-          <label>Password:</label>
-          <input type="password" name="password" value={this.state.password} onChange={e => this.handleChange(e)} />
-
-          <input type="submit" value="Login" />
+          <div className="field">
+            <label className="label">Username</label>
+            <div className="control">
+              <input className="input" type="text" name="username" value={this.state.username} onChange={e => this.handleChange(e)} />
+            </div>
+          </div>
+          <div className="field">
+            <label className="label">Password</label>
+            <div className="control">
+              <input className="input" type="password" name="password" value={this.state.password} onChange={e => this.handleChange(e)} />
+            </div>
+          </div>
+          <div className="field is-grouped">
+            <div className="control">
+              <button type='submit' className="button is-link">Login</button>
+            </div>
+            <div className="control">
+              <button type='reset' className="button is-text" onClick={() => null}>Cancel</button>
+            </div>
+          </div>
         </form>
-        <p>Don't have account?
-            <Link to={"/signup"}> Signup</Link>
-        </p>
-      </div>
+        <div className="section">
+          <h6 className="subtitle is-6">
+            Don't have account?
+            <br />
+          <Link className='button' to={"/signup"}>
+              Signup
+          </Link>
+          </h6>
+        </div>
+      </section>
     )
   }
 }
