@@ -11,7 +11,9 @@ class AddProject extends Component {
       title: "",
       description: "",
       imageUrl: '',
-      isUploading: false
+      isUploading: false,
+      uploadStatus: 'Choose a file...',
+      progress: 0
     };
     this.uploadService = new ServiceFileUpload()
   }
@@ -36,27 +38,54 @@ class AddProject extends Component {
 
   handleFileUpload = e => {
     console.log("The file to be uploaded is: ", e.target.files[0]);
-    this.setState({
-      imageUrl: '',
-      isUploading: true
-    });
+    if (e.target.files[0]) {
+      this.setState({
+        imageUrl: '',
+        isUploading: true,
+        uploadStatus: 'Uploading...',
+      });
+
+    }
+
     const uploadData = new FormData();
     // imageUrl => this name has to be the same as in the model since we pass
     // req.body to .create() method when creating a new thing in '/api/things/create' POST route
     uploadData.append("imageUrl", e.target.files[0]);
 
-    this.uploadService.handleUpload(uploadData)
+    this.uploadService.handleUpload(uploadData, this.getProgress)
       .then(response => {
         // console.log('response is: ', response);
         // after the console.log we can see that response carries 'secure_url' which we can use to update the state 
-        this.setState({ 
+        this.setState({
           imageUrl: response.secure_url,
-          isUploading: false
+          isUploading: false,
+          uploadStatus: 'Save or Choose file'
         });
       })
       .catch(err => {
         console.log("Error while uploading the file: ", err);
       });
+  }
+
+  resetState = () => this.setState({
+    title: '',
+    description: '',
+    imageUrl: '',
+    isUploading: false,
+    uploadStatus: 'Choose a file...'
+  })
+
+  getProgress = progress => {
+    if (progress === 100) {
+      this.setState({
+        progress,
+        uploadStatus: 'Upload OK'
+      })
+    } else {
+      this.setState({
+        progress
+      })
+    }
   }
 
   render() {
@@ -78,33 +107,34 @@ class AddProject extends Component {
 
           <div className="file has-name is-boxed">
             <label className="file-label">
-              <input className="file-input" type="file" name="imageUrl" onChange={(e) => this.handleFileUpload(e)}/>
-                <span className="file-cta">
-                  <span className="file-icon">
-                    <i className="fas fa-upload"></i>
-                  </span>
-                  <span className="file-label">
-                    Choose a file…
-                  </span>
+              <input className="file-input" type="file" name="imageUrl" onChange={(e) => this.handleFileUpload(e)} />
+              <span className="file-cta">
+                <span className="file-icon">
+                  <i className="fas fa-upload"></i>
                 </span>
-                <span className="file-name">
-                  {!this.state.imageUrl && this.state.isUploading && <progress class="progress is-small is-primary" max="100">15%</progress>}
-                  {this.state.imageUrl.split('/')[this.state.imageUrl.split('/').length - 1]}
+                <span className="file-label">
+                  {this.state.uploadStatus}
                 </span>
-              </label>
-            </div>
-            <div className="field is-grouped">
+              </span>
+              <span className="file-name">
+                {!this.state.imageUrl && this.state.isUploading && <progress className="progress is-small is-primary" value={this.state.progress} max="100">{this.state.progress}%</progress>}
+                {this.state.imageUrl.split('/')[this.state.imageUrl.split('/').length - 1]}
+              </span>
+            </label>
+          </div>
+          <br />
+          <div className="field is-grouped">
             <div className="control">
               <button type='submit' className="button is-link">Save New</button>
             </div>
             <div className="control">
-              <button type='reset' className="button is-text" onClick={() => null}>Cancel</button>
+              <button type='reset' className="button is-text" onClick={this.resetState}>Cancel</button>
             </div>
           </div>
         </form>
       </section>
-        )
-      }
-    }
-    
+    )
+  }
+}
+
 export default AddProject;

@@ -13,8 +13,8 @@ class Login extends Component {
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-    const username = this.state.username;
-    const password = this.state.password;
+    const { username, password } = this.state;
+
     this.service.login(username, password)
       .then(response => {
         this.setState({ username: "", password: "" });
@@ -64,7 +64,7 @@ class Login extends Component {
               <button type='submit' className="button is-link">Login</button>
             </div>
             <div className="control">
-              <button type='reset' className="button is-text" onClick={() => null}>Cancel</button>
+              <button type='reset' className="button is-text">Cancel</button>
             </div>
           </div>
         </form>

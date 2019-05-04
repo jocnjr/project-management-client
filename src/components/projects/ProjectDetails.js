@@ -47,7 +47,7 @@ class ProjectDetails extends Component {
   // DELETE PROJECT:
   deleteProject = () => {
     const { params } = this.props.match;
-    axios.delete(`http://localhost:5000/api/projects/${params.id}`, { withCredentials: true })
+    axios.delete(`${process.env.REACT_APP_API_URL}/api/projects/${params.id}`, { withCredentials: true })
       .then(() => {
         this.props.history.push('/projects'); // !!!         
       })

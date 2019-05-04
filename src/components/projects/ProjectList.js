@@ -49,7 +49,11 @@ class ProjectList extends Component {
                 <div className="card-content">
                   <div className="media">
                     <div className="media-content">
-                      <p className="title is-4">{project.title}</p>
+                      <p className="title is-4">
+                        <Link to={`/projects/${project._id}`}>
+                          {project.title}
+                        </Link>
+                      </p>
                       {/* <p className="subtitle is-6">@johnsmith</p> */}
                     </div>
                   </div>
